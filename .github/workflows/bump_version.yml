@@ -17,18 +17,18 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: develop
-          repository: C2Devel/terraform-provider-rockitcloud
+          repository: Diyckstra/terraform-provider-rockitcloud
           token: ${{ secrets.AUTOMATION_PAT }}
 
       - name: Set release number
         run: |
-          echo "LATEST_RELEASE=$(curl --silent https://api.github.com/repos/C2Devel/aws-sdk-go/releases/latest |\
+          echo "LATEST_RELEASE=$(curl --silent https://api.github.com/repos/Diyckstra/aws-sdk-go/releases/latest |\
           jq -r .name)" >> $GITHUB_ENV
 
       - name: Bump version in go.mod
         run: |
           go mod edit \
-          -replace github.com/aws/aws-sdk-go=github.com/C2Devel/aws-sdk-go@${{ env.LATEST_RELEASE }}
+          -replace github.com/aws/aws-sdk-go=github.com/Diyckstra/aws-sdk-go@${{ env.LATEST_RELEASE }}
 
       - name: Update dependencies
         run: |
@@ -38,7 +38,7 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.AUTOMATION_PAT }}
-          repository: C2Devel/terraform-provider-rockitcloud
+          repository: Diyckstra/terraform-provider-rockitcloud
           message: "modules: bump aws-sdk-go version"
           branch: "${{ env.LATEST_RELEASE }}"
   
@@ -68,4 +68,4 @@ jobs:
           token: ${{ secrets.AUTOMATION_PAT }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: rebase
-          repository: C2Devel/terraform-provider-rockitcloud
+          repository: Diyckstra/terraform-provider-rockitcloud
